@@ -1,0 +1,6 @@
+[book]
+authors = ["JEON SANGWON"]
+language = "en"
+multilingual = false
+src = "src"
+title = "begin-react"
