@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>記事詳細</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="記事詳細"><a class="header" href="#記事詳細">記事詳細</a></h1>
+<h2 id="-개요"><a class="header" href="#-개요">📌 개요</a></h2>
+<p>기사 제목, 본문, 작성자 정보 등을 확인할 수 있으며, 작성자 본인 또는 관리자의 경우 수정 및 삭제 버튼이 활성화됩니다.</p>
+<h2 id="-화면-항목"><a class="header" href="#-화면-항목">🖥️ 화면 항목</a></h2>
+<p><img src="../images/%E8%A8%98%E4%BA%8B%E8%A9%B3%E7%B4%B0.jpg" alt="" />
+<a href="../images/%E8%A8%98%E4%BA%8B%E8%A9%B3%E7%B4%B0.jpg">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル（画面）</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「記事詳細」표시</td></tr>
+<tr><td>タイトル（記事）</td><td>title</td><td>text</td><td>-</td><td>-</td><td>수정 불가</td></tr>
+<tr><td>内容</td><td>content</td><td>text</td><td>-</td><td>-</td><td>수정 불가</td></tr>
+<tr><td>戻る</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 back() 실행</td></tr>
+<tr><td>変更</td><td>-</td><td>button</td><td>-</td><td>-</td><td>로그인 유저의 권한이 admin 이거나 작성자ID와 로그인 유저ID가 일치할 경우 버튼 표시 <br> 클릭 시 articleEdit() 실행</td></tr>
+<tr><td>削除</td><td>-</td><td>button</td><td>-</td><td>-</td><td>로그인 유저의 권한이 admin 이거나 작성자ID와 로그인 유저ID가 일치할 경우 버튼 표시 <br> 클릭 시 articleDelete() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보"><a class="header" href="#-컴포넌트-정보">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>ArticleDetail</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/ArticleDetail.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의"><a class="header" href="#-액션-정의">🔄 액션 정의</a></h2>
+<h2 id="-useeffect"><a class="header" href="#-useeffect">🔹 useEffect()</a></h2>
+<p>초기 렌더링 시 기사 상세 정보를 서버에서 가져옵니다.
+현재 페이지 번호도 Redux를 통해 저장합니다.</p>
+<h3 id="①-locationstate에서-가져온-articleid-값이-존재하는지-체크합니다"><a class="header" href="#①-locationstate에서-가져온-articleid-값이-존재하는지-체크합니다">① <code>location.state</code>에서 가져온 <code>articleId</code> 값이 존재하는지 체크합니다.</a></h3>
+<p>값이 존재하지 않는 경우, 에러 메세지 표시 후, 기사 일람으로 이동.</p>
+<pre><code class="language-js">alert('記事情報がありません。');
+navigate('/ArticleList');
+</code></pre>
+<h3 id="②--서버에-기사-상세-정보를-요청합니다"><a class="header" href="#②--서버에-기사-상세-정보를-요청합니다">②  서버에 기사 상세 정보를 요청합니다.</a></h3>
+<p>📄 <a href="../api/articel_detail.html">記事詳細API 설계서</a></p>
+<BR>
+✅ 위의 결과에 에러가 발생하지 않은 경우
+<ol>
+<li>레스폰스로 받은 데이터를 상세 정보 state에 저장합니다.</li>
+</ol>
+<pre><code class="language-js">// 記事情報
+const [articleInfo, setArticleInfo] = useState({});
+
+↓
+
+// useEffect()
+const response = await axios.get(`/api/article_servlet/detail/${articleId}`);
+setArticleInfo(response.data);
+
+</code></pre>
+<br>
+<ol start="2">
+<li>redux에서 관리하고 있는 현재 페이지 번호를 갱신합니다.</li>
+</ol>
+<pre><code class="language-js">dispatch(setPaging({
+    currentPage: nowPage,
+}));
+</code></pre>
+<br>
+<ol start="3">
+<li>로컬의 loading state를 false로 갱신하여 화면이 리렌더링 될때 <code>Loading...</code> 문구가 표시되지 않도록합니다.</li>
+</ol>
+<pre><code class="language-js">// state 선언
+const [loading, setLoading] = useState(true)
+
+↓
+
+// useEffect()
+setLoading(false);
+
+↓
+
+// 화면 표시
+if (loading) {
+    return &lt;div&gt;Loading...&lt;/div&gt;; // 로딩 중 메시지
+}
+</code></pre>
+<br>
+❌ 위의 결과에 에러가 발생한 경우 : 에러 메세지 출력 <br>
+<br>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">400</td><td style="text-align: left">記事詳細情報を取得時に問題が発生しました。</td></tr>
+<tr><td style="text-align: left">500</td><td style="text-align: left">サーバー（DB）側でエラーが発生しました。</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-back"><a class="header" href="#-back">🔹 back()</a></h2>
+<p>기사 일람으로 이동합니다.</p>
+<pre><code class="language-js">const back = () =&gt; {
+    navigate('/ArticleList');
+};
+</code></pre>
+<hr />
+<h2 id="-articleedit"><a class="header" href="#-articleedit">🔹 articleEdit()</a></h2>
+<p>기사 편집 화면으로 이동합니다. 이때 기사 아이디를 state로 전달합니다.<br>
+※admin 권한의 유저만 가능합니다.</p>
+<pre><code class="language-js">const articleEdit = () =&gt; {
+    navigate('/articleEdit', { state: { articleId: articleInfo.articleId } });
+};
+</code></pre>
+<hr />
+<h2 id="-articledelete"><a class="header" href="#-articledelete">🔹 articleDelete()</a></h2>
+<p>기사 삭제 화면면으로 이동합니다. 이때 기사 아이디를 state로 전달합니다.<br>
+※admin 권한의 유저만 가능합니다.</p>
+<pre><code class="language-js">const articleDelete = () =&gt; {
+    navigate('/articleDelete', { state: { articleId: articleInfo.articleId } });
+};
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../screen/article_regist.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../screen/articel_edit.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../screen/article_regist.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../screen/articel_edit.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

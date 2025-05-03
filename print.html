@@ -1,0 +1,1075 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="画面遷移図"><a class="header" href="#画面遷移図">画面遷移図</a></h1>
+<p><img src="images/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3.jpg" alt="이미지 설명" />
+<a href="images/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3.jpg">イメージを開く</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="api定義書"><a class="header" href="#api定義書">API定義書</a></h1>
+<p>백엔드측과의 통신에 관한 내용을 기재합니다. <BR>
+리퀘스트의 파라미터 정보와 레스폰스 결과에 따른 반환값, 출력할 메세지 등을 담고있습니다.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ログインapi"><a class="header" href="#ログインapi">ログインAPI</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/login_servlet/login</code></li>
+<li><strong>Method</strong>: <code>POST</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">email</td><td style="text-align: left">String</td><td style="text-align: left">30</td><td style="text-align: left">비밀번호</td></tr>
+<tr><td style="text-align: left">password</td><td style="text-align: left">String</td><td style="text-align: left">30</td><td style="text-align: left">비밀번호</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드"><a class="header" href="#-성공-응답-필드">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">authority</td><td style="text-align: left">String</td><td style="text-align: left">유저 권한 (admin/user)</td></tr>
+<tr><td style="text-align: left">userId</td><td style="text-align: left">String</td><td style="text-align: left">작성자 ID</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드"><a class="header" href="#-오류-코드">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">200系以外</td><td style="text-align: left">ログイン情報を確認してください。</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="新規ユーザー作成api"><a class="header" href="#新規ユーザー作成api">新規ユーザー作成API</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/profile_servlet/profile_servlet/regist</code></li>
+<li><strong>Method</strong>: <code>POST</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">userId</td><td style="text-align: left">String</td><td style="text-align: left">-</td><td style="text-align: left">유저 아이디 (공란)</td></tr>
+<tr><td style="text-align: left">email</td><td style="text-align: left">String</td><td style="text-align: left">30</td><td style="text-align: left">메일 주소</td></tr>
+<tr><td style="text-align: left">password</td><td style="text-align: left">String</td><td style="text-align: left">50</td><td style="text-align: left">비밀번호</td></tr>
+<tr><td style="text-align: left">name</td><td style="text-align: left">String</td><td style="text-align: left">50</td><td style="text-align: left">유저명</td></tr>
+<tr><td style="text-align: left">authority</td><td style="text-align: left">String</td><td style="text-align: left">-</td><td style="text-align: left">유저 권한</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드-1"><a class="header" href="#-성공-응답-필드-1">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드-1"><a class="header" href="#-오류-코드-1">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">400</td><td style="text-align: left">既に同じメールが登録されています。</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="会員一覧"><a class="header" href="#会員一覧">会員一覧</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/profile_servlet/usersList</code></li>
+<li><strong>Method</strong>: <code>GET</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">currentPageNum</td><td style="text-align: left">Number</td><td style="text-align: left">-</td><td style="text-align: left">현재 페이지</td></tr>
+<tr><td style="text-align: left">maxRecordCount</td><td style="text-align: left">Number</td><td style="text-align: left">-</td><td style="text-align: left">최대 표시건 수</td></tr>
+<tr><td style="text-align: left">maxPageCount</td><td style="text-align: left">Number</td><td style="text-align: left">-</td><td style="text-align: left">최대 페이지 수</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드-2"><a class="header" href="#-성공-응답-필드-2">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">userId</td><td style="text-align: left">String</td><td style="text-align: left">ユーザーID</td></tr>
+<tr><td style="text-align: left">name</td><td style="text-align: left">String</td><td style="text-align: left">氏名</td></tr>
+<tr><td style="text-align: left">email</td><td style="text-align: left">String</td><td style="text-align: left">メールアドレス</td></tr>
+<tr><td style="text-align: left">authority</td><td style="text-align: left">String</td><td style="text-align: left">権限</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드-2"><a class="header" href="#-오류-코드-2">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="記事情報一覧"><a class="header" href="#記事情報一覧">記事情報一覧</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/article_servlet/articleList</code></li>
+<li><strong>Method</strong>: <code>GET</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">currentPageNum</td><td style="text-align: left">Number</td><td style="text-align: left">-</td><td style="text-align: left">현재 페이지</td></tr>
+<tr><td style="text-align: left">maxRecordCount</td><td style="text-align: left">Number</td><td style="text-align: left">-</td><td style="text-align: left">최대 표시건 수</td></tr>
+<tr><td style="text-align: left">maxPageCount</td><td style="text-align: left">Number</td><td style="text-align: left">-</td><td style="text-align: left">최대 페이지 수</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드-3"><a class="header" href="#-성공-응답-필드-3">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">articleId</td><td style="text-align: left">Number</td><td style="text-align: left">기사 고유 ID</td></tr>
+<tr><td style="text-align: left">title</td><td style="text-align: left">String</td><td style="text-align: left">기사 제목</td></tr>
+<tr><td style="text-align: left">createdAt</td><td style="text-align: left">String</td><td style="text-align: left">작성일시</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드-3"><a class="header" href="#-오류-코드-3">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="記事投稿"><a class="header" href="#記事投稿">記事投稿</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/article_servlet/post</code></li>
+<li><strong>Method</strong>: <code>POST</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">articleId</td><td style="text-align: left">Number</td><td style="text-align: left">-</td><td style="text-align: left">기사 고유 ID</td></tr>
+<tr><td style="text-align: left">title</td><td style="text-align: left">String</td><td style="text-align: left">100</td><td style="text-align: left">기사 제목</td></tr>
+<tr><td style="text-align: left">content</td><td style="text-align: left">String</td><td style="text-align: left">1000</td><td style="text-align: left">기사 내용</td></tr>
+<tr><td style="text-align: left">userId</td><td style="text-align: left">String</td><td style="text-align: left">-</td><td style="text-align: left">작성자 ID</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드-4"><a class="header" href="#-성공-응답-필드-4">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드-4"><a class="header" href="#-오류-코드-4">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">400</td><td style="text-align: left">既に同じ記述が登録されています。</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="記事詳細"><a class="header" href="#記事詳細">記事詳細</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/article_servlet/detail/${articleId}</code></li>
+<li><strong>Method</strong>: <code>GET</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">articleId</td><td style="text-align: left">Number</td><td style="text-align: left">10</td><td style="text-align: left">조회할 기사 ID</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드-5"><a class="header" href="#-성공-응답-필드-5">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">articleId</td><td style="text-align: left">Number</td><td style="text-align: left">기사 고유 ID</td></tr>
+<tr><td style="text-align: left">title</td><td style="text-align: left">String</td><td style="text-align: left">기사 제목</td></tr>
+<tr><td style="text-align: left">content</td><td style="text-align: left">String</td><td style="text-align: left">기사 내용</td></tr>
+<tr><td style="text-align: left">userId</td><td style="text-align: left">String</td><td style="text-align: left">작성자 ID</td></tr>
+<tr><td style="text-align: left">createdAt</td><td style="text-align: left">String</td><td style="text-align: left">작성일시</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드-5"><a class="header" href="#-오류-코드-5">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">400</td><td style="text-align: left">記事詳細情報を取得時に問題が発生しました。</td></tr>
+<tr><td style="text-align: left">500</td><td style="text-align: left">サーバー（DB）側でエラーが発生しました。</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="記事編集"><a class="header" href="#記事編集">記事編集</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/article_servlet/edit</code></li>
+<li><strong>Method</strong>: <code>PUT</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">articleId</td><td style="text-align: left">Number</td><td style="text-align: left">10</td><td style="text-align: left">기사 고유 ID</td></tr>
+<tr><td style="text-align: left">title</td><td style="text-align: left">String</td><td style="text-align: left">100</td><td style="text-align: left">기사 제목</td></tr>
+<tr><td style="text-align: left">content</td><td style="text-align: left">String</td><td style="text-align: left">1000</td><td style="text-align: left">기사 내용</td></tr>
+<tr><td style="text-align: left">userId</td><td style="text-align: left">String</td><td style="text-align: left">-</td><td style="text-align: left">작성자 ID</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드-6"><a class="header" href="#-성공-응답-필드-6">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드-6"><a class="header" href="#-오류-코드-6">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="記事削除"><a class="header" href="#記事削除">記事削除</a></h1>
+<ul>
+<li><strong>URL</strong>: <code>/api/article_servlet/delete</code></li>
+<li><strong>Method</strong>: <code>DELETE</code></li>
+<li><strong>Request Parameter</strong>:</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">데이터사이즈</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">articleId</td><td style="text-align: left">Number</td><td style="text-align: left">10</td><td style="text-align: left">기사 고유 ID</td></tr>
+<tr><td style="text-align: left">userId</td><td style="text-align: left">String</td><td style="text-align: left">-</td><td style="text-align: left">작성자 ID</td></tr>
+<tr><td style="text-align: left">authority</td><td style="text-align: left">String</td><td style="text-align: left">-</td><td style="text-align: left">유저 권한 (admin/user)</td></tr>
+</tbody></table>
+</div>
+<h3 id="-성공-응답-필드-7"><a class="header" href="#-성공-응답-필드-7">✅ 성공 응답 필드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">필드명</th><th style="text-align: left">타입</th><th style="text-align: left">설명</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div>
+<h3 id="-오류-코드-7"><a class="header" href="#-오류-코드-7">❌ 오류 코드</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">-</td><td style="text-align: left">-</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="画面定義書"><a class="header" href="#画面定義書">画面定義書</a></h1>
+<p>화면의 개요, 항목, 컴포넌트 정보와 액션 정의 등 프론트엔드에 관한 전반적인 내용을 기재합니다.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ログイン"><a class="header" href="#ログイン">ログイン</a></h1>
+<h2 id="-개요"><a class="header" href="#-개요">📌 개요</a></h2>
+<p>로그인 입력을 받고, 입력값의 유효성을 검증하며,서버와 통신 후 인증 결과에 따라 리다이렉션을 수행합니다<br>
+Redux를 통해 로그인 정보를 저장하고 React Router를 사용하여 페이지 전환을 처리합니다.</p>
+<h2 id="-화면-항목"><a class="header" href="#-화면-항목">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3.jpg" alt="" />
+<a href="screen/../images/%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3.jpg">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「ログイン」표시</td></tr>
+<tr><td>メールアドレス</td><td>email</td><td>text</td><td>30</td><td>〇</td><td>-</td></tr>
+<tr><td>パスワード</td><td>password</td><td>text</td><td>50</td><td>〇</td><td>-</td></tr>
+<tr><td>ログイン</td><td>-</td><td>submit</td><td>-</td><td>-</td><td>클릭 시 handleSubmit() 실행</td></tr>
+<tr><td>アカウントを作成する</td><td>-</td><td>link</td><td>-</td><td>-</td><td>클릭 시 moveRegist() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보"><a class="header" href="#-컴포넌트-정보">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>LoginForm</td></tr>
+<tr><td><strong>파일 위치</strong></td><td>src/components/Login.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의"><a class="header" href="#-액션-정의">🔄 액션 정의</a></h2>
+<h2 id="-handlesubmit"><a class="header" href="#-handlesubmit">🔹 <code>handleSubmit()</code></a></h2>
+<p>로그인 버튼 클릭 시 호출되는 함수입니다.</p>
+<h3 id="①-입력값-유효성-검사"><a class="header" href="#①-입력값-유효성-검사">① 입력값 유효성 검사</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th><th>에러 메세지</th></tr></thead><tbody>
+<tr><td><strong>email</strong></td><td>이메일 포맷 확인</td><td>メールアドレスの形式で入力してください。</td></tr>
+<tr><td><strong>password</strong></td><td>미입력 확인</td><td>パスワードを入力してください。</td></tr>
+</tbody></table>
+</div>
+<h3 id="②-서버-로그인-api-호출"><a class="header" href="#②-서버-로그인-api-호출">② 서버 로그인 API 호출</a></h3>
+<p>유효성 검사를 통과한 경우, 서버에 로그인 요청을 보냅니다.</p>
+<p>📄 <a href="screen/../api/login.html">Login API 설계서</a></p>
+<BR>
+✅ 위의 결과에 에러가 발생하지 않은 경우
+<ol>
+<li>Redux를 통해 response의 로그인 정보 저장</li>
+</ol>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>・authority</strong></td><td>response.data.authority</td></tr>
+<tr><td><strong>・userId</strong></td><td>response.data.userId</td></tr>
+</tbody></table>
+</div><BR>
+<ol start="2">
+<li>情報一覧メニュー 페이지로 리다이렉션<br></li>
+</ol>
+<pre><code class="language-js">alert(`login : ${setLoginInfo.authority}`);
+navigate('/Menu');
+</code></pre>
+<BR>
+<p>❌ 위의 결과에 에러가 발생한 경우<BR></p>
+<ol>
+<li>「ログイン情報を確認してください。」에러 메세지 출력.<BR></li>
+</ol>
+<BR>
+<hr />
+<h2 id="-moveregist"><a class="header" href="#-moveregist">🔹 <code>moveRegist()</code></a></h2>
+<p>「アカウントを作成する」링크 클릭 시 호출되는 함수입니다.</p>
+<h3 id="①-新規ユーザー作成-페이지로-리다이렉션"><a class="header" href="#①-新規ユーザー作成-페이지로-리다이렉션">① 新規ユーザー作成 페이지로 리다이렉션<br></a></h3>
+<pre><code class="language-js">    navigate('/UserRegist')
+    console.log("회원 가입 페이지로 이동");
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="新規ユーザー作成"><a class="header" href="#新規ユーザー作成">新規ユーザー作成</a></h1>
+<h2 id="-개요-1"><a class="header" href="#-개요-1">📌 개요</a></h2>
+<p>사용자가 입력한 정보에 대해 검증을 수행한 후, 서버에 사용자 등록 요청을 보냅니다.<br>
+등록 완료 후 로그인 화면으로 리다이렉션합니다.</p>
+<h2 id="-화면-항목-1"><a class="header" href="#-화면-항목-1">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E6%96%B0%E8%A6%8F%E7%99%BB%E9%8C%B2.jpg" alt="" />
+<a href="screen/../images/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E6%96%B0%E8%A6%8F%E7%99%BB%E9%8C%B2.jpg">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「新規ユーザー作成」표시</td></tr>
+<tr><td>名前</td><td>name</td><td>text</td><td>50</td><td>〇</td><td>-</td></tr>
+<tr><td>メールアドレス</td><td>email</td><td>text</td><td>30</td><td>〇</td><td>-</td></tr>
+<tr><td>パスワード</td><td>password</td><td>text</td><td>50</td><td>〇</td><td>-</td></tr>
+<tr><td>権限</td><td>authority</td><td>radio</td><td>-</td><td>〇</td><td>-</td></tr>
+<tr><td>ユーザー新規作成</td><td>-</td><td>submit</td><td>-</td><td>-</td><td>클릭 시 createUser() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-1"><a class="header" href="#-컴포넌트-정보-1">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>UserRegist</td></tr>
+<tr><td><strong>파일 위치</strong></td><td>src/components/UserRegist.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-1"><a class="header" href="#-액션-정의-1">🔄 액션 정의</a></h2>
+<h2 id="-createuser"><a class="header" href="#-createuser">🔹 <code>createUser()</code></a></h2>
+<p>사용자 등록 버튼 클릭 시 호출되는 함수입니다.</p>
+<h3 id="①-입력값-검증"><a class="header" href="#①-입력값-검증">① 입력값 검증</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th><th>에러 메세지</th></tr></thead><tbody>
+<tr><td><strong>name</strong></td><td>미입력</td><td>名前が未入力です。入力してください。</td></tr>
+<tr><td><strong>name</strong></td><td>입력값 확인</td><td>名前は漢字、ひらがなで入力してください。</td></tr>
+<tr><td><strong>email</strong></td><td>이메일 포맷</td><td>メールアドレスの入力値で問題があります。確認してください。</td></tr>
+<tr><td><strong>password</strong></td><td>미입력</td><td>パスワードが未入力です。入力してください。</td></tr>
+<tr><td><strong>authority</strong></td><td>미선택</td><td>権限を選択してください。</td></tr>
+</tbody></table>
+</div>
+<h3 id="②-서버-유저-신규규등록-api-호출"><a class="header" href="#②-서버-유저-신규규등록-api-호출">② 서버 유저 신규규등록 API 호출</a></h3>
+<p>모든 검증을 통과한 후, 서버에 사용자 정보를 전송하여 신규 유저를 등록합니다.</p>
+<p>📄 <a href="screen/../api/user_regist.html">유저 등록 API 설계서</a></p>
+<BR>
+<BR>
+✅ 위의 결과에 에러가 발생하지 않은 경우
+<ol>
+<li>로그인 페이지로 리다이렉션<br></li>
+</ol>
+<pre><code class="language-js">navigate('/');
+</code></pre>
+<BR>
+<p>❌ 위의 결과에 에러가 발생한 경우<BR></p>
+<ol>
+<li>에러 메세지 출력.</li>
+</ol>
+<pre><code class="language-js">alert('既に同じメールが登録されています。');
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="情報一覧メニュー"><a class="header" href="#情報一覧メニュー">情報一覧メニュー</a></h1>
+<h2 id="-개요-2"><a class="header" href="#-개요-2">📌 개요</a></h2>
+<p>로그인 후 사용자에게 표시되는 메인 메뉴 화면의 액션입니다.
+기사 일람 화면으로 이동할 수 있으며,
+Redux의 상태에 따라 유저 권한이 admin인 경우 유저 일람으로 이동할 수 있습니다.</p>
+<h2 id="-화면-항목-2"><a class="header" href="#-화면-항목-2">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E6%83%85%E5%A0%B1%E4%B8%80%E8%A6%A7%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC.png" alt="" />
+<a href="screen/../images/%E6%83%85%E5%A0%B1%E4%B8%80%E8%A6%A7%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC.png">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「情報一覧メニュー」표시</td></tr>
+<tr><td>記事一覧</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 moveArticle() 실행</td></tr>
+<tr><td>会員一覧</td><td>-</td><td>button</td><td>-</td><td>-</td><td>로그인 유저의 권한이 admin일 경우에만 버튼 표시 <BR> 클릭 시 moveUser() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-2"><a class="header" href="#-컴포넌트-정보-2">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>Menu</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/Menu.js</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-2"><a class="header" href="#-액션-정의-2">🔄 액션 정의</a></h2>
+<h2 id="-movearticle"><a class="header" href="#-movearticle">🔹 <code>moveArticle()</code></a></h2>
+<ul>
+<li><strong>기능</strong>: 기사 일람으로 이동합니다.</li>
+<li><strong>추가 처리</strong>: 현재 페이지를 Redux에 1로 설정합니다.</li>
+</ul>
+<pre><code class="language-js">dispatch(setPaging({
+  currentPage: 1,
+}));
+
+navigate('/ArticleList');
+</code></pre>
+<hr />
+<h2 id="-moveuser"><a class="header" href="#-moveuser">🔹 <code>moveUser()</code></a></h2>
+<p>유저 일람으로 이동합니다.</p>
+<pre><code class="language-js">navigate('/UserList');
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="会員一覧-1"><a class="header" href="#会員一覧-1">会員一覧</a></h1>
+<h2 id="-개요-3"><a class="header" href="#-개요-3">📌 개요</a></h2>
+<p>등록된 모든 사용자 정보를 테이블 형태로 출력하며,
+각 사용자 항목을 클릭하면 해당 사용자 상세 정보 페이지로 이동합니다.</p>
+<h2 id="-화면-항목-3"><a class="header" href="#-화면-항목-3">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E4%BC%9A%E5%93%A1%E4%B8%80%E8%A6%A7.jpg" alt="" />
+<a href="screen/../images/%E4%BC%9A%E5%93%A1%E4%B8%80%E8%A6%A7.jpg">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「会員一覧」표시</td></tr>
+<tr><td>戻る</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 moveMenu() 실행</td></tr>
+<tr><td>ユーザーID</td><td>userId</td><td>label</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>氏名</td><td>name</td><td>label</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>メールアドレス</td><td>email</td><td>label</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>権限</td><td>authority</td><td>label</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-3"><a class="header" href="#-컴포넌트-정보-3">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>UserList</td></tr>
+<tr><td><strong>파일 위치</strong></td><td>src/components/UserList.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-3"><a class="header" href="#-액션-정의-3">🔄 액션 정의</a></h2>
+<h2 id="-useeffect"><a class="header" href="#-useeffect">🔹 useEffect()</a></h2>
+<p>초기 렌더링 시 유저 일람 데이터를 로드합니다.</p>
+<p>📄 <a href="screen/../api/user_list.html">会員一覧 API 설계서</a></p>
+<BR>
+<pre><code class="language-js">axios.get('/api/profile_servlet/usersList',{
+      params : {
+        "currentPageNum":1,
+        "maxRecordCount":100,
+        "maxPageCount":5
+      }
+    })
+    .then(response =&gt; setUserList(response.data.infoList))
+    .catch(error =&gt; console.log(error))
+</code></pre>
+<BR>
+유저 일람 로드에 성공하면 로컬 스테이트 userinfoList를 갱신합니다.
+<pre><code class="language-js">  const [userinfoList, setUserList] = useState([])
+</code></pre>
+<BR>
+<hr />
+<h2 id="-movemenu"><a class="header" href="#-movemenu">🔹 <code>moveMenu()</code></a></h2>
+<p>메인 메뉴로 돌아가는 기능입니다.</p>
+<pre><code class="language-js">navigate('/menu');
+</code></pre>
+<BR>
+<hr />
+<h2 id="-movedetail"><a class="header" href="#-movedetail">🔹 <code>moveDetail()</code></a></h2>
+<p>유저 일람 항목 클릭 시 기사 상세 페이지로 이동합니다.<BR>
+유저 상세 페이지로 이동하려했던 것인지 확인이 필요합니다.</p>
+<pre><code class="language-js">  const moveDetail = (articleId) =&gt; {
+    navigate('/article-detail', { state: { articleId } });
+  };
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="記事一覧"><a class="header" href="#記事一覧">記事一覧</a></h1>
+<h2 id="-개요-4"><a class="header" href="#-개요-4">📌 개요</a></h2>
+<p>전체 기사 목록을 페이징 처리와 함께 보여줍니다.
+<code>기사 상세 화면</code>으로 이동하거나, <code>新規投稿</code> 버튼을 통해 새 게시글 작성이 가능합니다.
+Redux를 통해 페이징 상태를 관리하며, <code>PageScreen</code> 컴포넌트를 통해 페이지 네비게이션을 제공합니다.</p>
+<h2 id="-화면-항목-4"><a class="header" href="#-화면-항목-4">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E8%A8%98%E4%BA%8B%E6%83%85%E5%A0%B1%E4%B8%80%E8%A6%A7.png" alt="" />
+<a href="screen/../images/%E8%A8%98%E4%BA%8B%E6%83%85%E5%A0%B1%E4%B8%80%E8%A6%A7.png">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「記事情報一覧」표시</td></tr>
+<tr><td>戻る</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 moveMenu() 실행</td></tr>
+<tr><td>新規頭語</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 moveCreate() 실행</td></tr>
+<tr><td>ログアウト</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 logOut() 실행</td></tr>
+<tr><td>記事番号</td><td>articleId</td><td>text</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>タイトル</td><td>title</td><td>text</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>作成時間</td><td>createdAt</td><td>text</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>総件数</td><td>totalCount</td><td>label</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, redux paging 상태에서 관리</td></tr>
+<tr><td>総ページ数</td><td>totalPage</td><td>label</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, redux paging 상태에서 관리</td></tr>
+<tr><td>現在ページ数</td><td>currentPage</td><td>label</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, redux paging 상태에서 관리</td></tr>
+<tr><td>1ページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, 클릭 시 firstPage() 호출</td></tr>
+<tr><td>前のページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, 클릭 시 prevPage() 호출</td></tr>
+<tr><td>ページ番号</td><td>-</td><td>button</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, 클릭 시 changeNowPage() 호출</td></tr>
+<tr><td>次のページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, 클릭 시 nextPage() 호출</td></tr>
+<tr><td>最後のページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>PageScreen 컴포넌트의 항목, 클릭 시 lastPage() 호출</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-4"><a class="header" href="#-컴포넌트-정보-4">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>ArticleList</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/ArticleList.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-state와-상수"><a class="header" href="#-state와-상수">🔄 state와 상수</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>변수명</th><th>설명</th></tr></thead><tbody>
+<tr><td>articleInfoList</td><td>기사 일람 정보보을 저장하는 상태</td></tr>
+<tr><td>nowPage</td><td>현재 페이지 번호 상태 (<code>useState</code>)</td></tr>
+<tr><td>getPaging</td><td>Redux에서 가져온 페이징 정보 (<code>paging</code>)</td></tr>
+<tr><td>displayRecordMaxCount</td><td>한 페이지에 표시할 최대 기사 수 (<code>5</code>)</td></tr>
+<tr><td>displayMaxPageCount</td><td>페이징 바에 표시할 최대 페이지 수 (<code>5</code>)</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-4"><a class="header" href="#-액션-정의-4">🔄 액션 정의</a></h2>
+<h2 id="-movemenu-1"><a class="header" href="#-movemenu-1">🔹 <code>moveMenu()</code></a></h2>
+<p>情報一覧メニュー 화면으로 이동</p>
+<pre><code class="language-js">const moveMenu = () =&gt; {
+  navigate('/menu');
+};
+</code></pre>
+<hr />
+<h2 id="-movecreate"><a class="header" href="#-movecreate">🔹 <code>moveCreate()</code></a></h2>
+<p>記事投稿 화면으로 이동</p>
+<pre><code class="language-js">const moveCreate = () =&gt; {
+  navigate('/articleRegist', { state: { nowPage } });
+};
+</code></pre>
+<hr />
+<h2 id="-movedetail-1"><a class="header" href="#-movedetail-1">🔹 <code>moveDetail()</code></a></h2>
+<p>記事詳細 화면으로 이동</p>
+<pre><code class="language-js">const moveDetail = (articleId) =&gt; {
+  navigate('/ArticleDetail', { state: { articleId, nowPage } });
+};
+</code></pre>
+<hr />
+<h2 id="-logout"><a class="header" href="#-logout">🔹 <code>logOut()</code></a></h2>
+<p>로그인 화면으로 이동</p>
+<pre><code class="language-js">const logOut = () =&gt; {
+  navigate('/');
+};
+</code></pre>
+<hr />
+<h2 id="-fetchdata"><a class="header" href="#-fetchdata">🔹 <code>fetchData()</code></a></h2>
+<p>기사 일람 정보 취득</p>
+<h3 id="①-서버에-파라미터-페이지pageno의-일람-정보를-요청"><a class="header" href="#①-서버에-파라미터-페이지pageno의-일람-정보를-요청">① 서버에 파라미터 페이지(pageNo)의 일람 정보를 요청</a></h3>
+<p>📄 <a href="screen/../api/article_list.html">記事情報一覧API 설계서</a></p>
+<pre><code class="language-js">const response = await axios.get('/api/article_servlet/articleList', {
+    params: {
+        currentPageNum: pageNo,
+        maxRecordCount: displayRecordMaxCount,
+        maxPageCount: displayMaxPageCount,
+    }
+});
+</code></pre>
+<h3 id="②-redux에서-관리하는-페이지네이션-state를-레스폰스-값으로-갱신"><a class="header" href="#②-redux에서-관리하는-페이지네이션-state를-레스폰스-값으로-갱신">② redux에서 관리하는 페이지네이션 state를 레스폰스 값으로 갱신</a></h3>
+<pre><code class="language-js">const dispatch = useDispatch();
+const data = response.data;
+
+dispatch(setPaging({
+    currentPage: data.currentPage,
+    startPage: data.startPage,
+    endPage: data.endPage,
+    totalPage: data.totalPage,
+    totalCount: data.totalCount,
+    displayMaxPage: displayMaxPageCount,
+}));
+</code></pre>
+<h3 id="③-state를-레스폰스-값으로-기사-일람-현재-페이지-state-갱신"><a class="header" href="#③-state를-레스폰스-값으로-기사-일람-현재-페이지-state-갱신">③ state를 레스폰스 값으로 기사 일람, 현재 페이지 state 갱신</a></h3>
+<pre><code class="language-js">const [articleInfoList, setArticleInfoList] = useState([]);
+const [nowPage, setNowPage] = useState(1);
+
+setArticleInfoList(data.infoList);
+setNowPage(data.currentPage);
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ページネーション"><a class="header" href="#ページネーション">ページネーション</a></h1>
+<h2 id="-개요-5"><a class="header" href="#-개요-5">📌 개요</a></h2>
+<p>페이지 번호 UI를 보여주고, 페이지 이동을 트리거하는 역할을 합니다.</p>
+<h2 id="-화면-항목-5"><a class="header" href="#-화면-항목-5">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E3%83%9A%E3%83%BC%E3%82%B8%E3%83%8D%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3.png" alt="" />
+<a href="screen/../images/%E3%83%9A%E3%83%BC%E3%82%B8%E3%83%8D%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3.png">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>総件数</td><td>totalCount</td><td>label</td><td>-</td><td>-</td><td>일람의 총 건수, redux paging 상태에서 관리</td></tr>
+<tr><td>総ページ数</td><td>totalPage</td><td>label</td><td>-</td><td>-</td><td>일람 페이지의 총 수, redux paging 상태에서 관리</td></tr>
+<tr><td>現在ページ数</td><td>currentPage</td><td>label</td><td>-</td><td>-</td><td>일람에서 표시하고 있는 현재 페이지 번호, redux paging 상태에서 관리</td></tr>
+<tr><td>1ページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 firstPage() 호출</td></tr>
+<tr><td>前のページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 prevPage() 호출</td></tr>
+<tr><td>ページ番号</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 changeNowPage() 호출</td></tr>
+<tr><td>次のページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 nextPage() 호출</td></tr>
+<tr><td>最後のページへ</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 lastPage() 호출</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-5"><a class="header" href="#-컴포넌트-정보-5">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>PageScreen</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/PageScreen.js</td></tr>
+</tbody></table>
+</div>
+<h2 id="-페이지-번호-생성-함수"><a class="header" href="#-페이지-번호-생성-함수">📚 페이지 번호 생성 함수</a></h2>
+<h2 id="-setpages"><a class="header" href="#-setpages">🔹 <code>setPages()</code></a></h2>
+<p><code>redux</code>의 페이징 상태에서 <code>startPage</code>와 <code>endPage</code>를 이용하여 페이지 번호 생성</p>
+<pre><code class="language-js">const setPages = React.useMemo(() =&gt; {
+  let pages = [];
+  let startPage = getPaging.startPage;
+  let endPage = getPaging.endPage;
+
+  if (endPage === 0) {
+    pages = [1];
+  } else {
+    for (let num = startPage; num &lt;= endPage; num++) {
+      pages.push(num);
+    }
+  }
+  return pages;
+}, [getPaging.startPage, getPaging.endPage]);
+</code></pre>
+<hr />
+<h2 id="-페이지-네비게이션-함수"><a class="header" href="#-페이지-네비게이션-함수">📚 페이지 네비게이션 함수</a></h2>
+<p><code>redux</code> 페이징 상태의 <code>currentPage</code>를 갱신함함</p>
+<h2 id="-prevpage"><a class="header" href="#-prevpage">🔹 <code>prevPage()</code></a></h2>
+<pre><code class="language-js">const prevPage = () =&gt; {
+  dispatch({ type: 'SET_CURRENT_PAGE', payload: getPaging.currentPage - 1 });
+};
+</code></pre>
+<hr />
+<h2 id="-nextpage"><a class="header" href="#-nextpage">🔹 <code>nextPage()</code></a></h2>
+<pre><code class="language-js">const nextPage = () =&gt; {
+  dispatch({ type: 'SET_CURRENT_PAGE', payload: getPaging.endPage + 1 });
+};
+</code></pre>
+<hr />
+<h2 id="-lastpage"><a class="header" href="#-lastpage">🔹 <code>lastPage()</code></a></h2>
+<pre><code class="language-js">const lastPage = () =&gt; {
+  dispatch({ type: 'SET_CURRENT_PAGE', payload: getPaging.totalPage });
+};
+</code></pre>
+<hr />
+<h2 id="-firstpage"><a class="header" href="#-firstpage">🔹 <code>firstPage()</code></a></h2>
+<pre><code class="language-js">const firstPage = () =&gt; {
+  dispatch({ type: 'SET_CURRENT_PAGE', payload: 1 });
+};
+</code></pre>
+<hr />
+<h2 id="-changenowpage"><a class="header" href="#-changenowpage">🔹 <code>changeNowPage()</code></a></h2>
+<pre><code class="language-js">const changeNowPage = (page) =&gt; {
+  dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
+};
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="記事投稿-1"><a class="header" href="#記事投稿-1">記事投稿</a></h1>
+<h2 id="-개요-6"><a class="header" href="#-개요-6">📌 개요</a></h2>
+<p>유저가 기사를 등록할 수 있도록 하는 화면 <BR>
+등록 버튼 클릭 시 서버로 데이터를 전송하며, 성공 시 기사 일람 화면으로 리다이렉션됩니다.</p>
+<h2 id="-화면-항목-6"><a class="header" href="#-화면-항목-6">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E8%A8%98%E4%BA%8B%E6%8A%95%E7%A8%BF.png" alt="" />
+<a href="screen/../images/%E8%A8%98%E4%BA%8B%E6%8A%95%E7%A8%BF.png">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル（画面）</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「記事投稿」표시</td></tr>
+<tr><td>タイトル（記事）</td><td>title</td><td>text</td><td>100</td><td>-</td><td>-</td></tr>
+<tr><td>内容</td><td>content</td><td>text</td><td>1000</td><td>-</td><td>-</td></tr>
+<tr><td>投稿する</td><td>-</td><td>submit</td><td>-</td><td>-</td><td>클릭 시 moveArticle() 실행</td></tr>
+<tr><td>キャンセル</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 btnCancel() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-6"><a class="header" href="#-컴포넌트-정보-6">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>ArticleRegist</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/ArticleRegist.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-5"><a class="header" href="#-액션-정의-5">🔄 액션 정의</a></h2>
+<h2 id="-movearticle-1"><a class="header" href="#-movearticle-1">🔹 <code>moveArticle()</code></a></h2>
+<p>등록 버튼 클릭 시 호출되는 함수입니다.</p>
+<h3 id="①-입력값-유효성-검사-1"><a class="header" href="#①-입력값-유효성-검사-1">① 입력값 유효성 검사</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th><th>에러 메세지</th></tr></thead><tbody>
+<tr><td><strong>title</strong></td><td>미입력 확인</td><td>タイトルを入力してください。</td></tr>
+<tr><td><strong>content</strong></td><td>미입력 확인</td><td>内容を入力してください。</td></tr>
+</tbody></table>
+</div>
+<h3 id="②-서버에-등록-api-호출"><a class="header" href="#②-서버에-등록-api-호출">② 서버에 등록 API 호출</a></h3>
+<p>유효성 검사를 통과한 경우, 서버에 API를 호출합니다.</p>
+<p>📄 <a href="screen/../api/article_regist.html">記事投稿API 설계서</a></p>
+<BR>
+✅ 등록 성공 시 기사 일람 화면으로 이동
+<pre><code class="language-js">navigate('/ArticleList');
+</code></pre>
+<p><BR><BR>
+❌ 위의 결과에 에러가 발생한 경우<BR></p>
+<p><code>既に同じ記述が登録されています</code>에러 메세지 출력.<BR></p>
+<hr />
+<h2 id="-btncancel"><a class="header" href="#-btncancel">🔹 <code>btnCancel()</code></a></h2>
+<p>유저 일람으로 이동합니다.</p>
+<pre><code class="language-js">navigate('/UserList');
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="記事詳細-1"><a class="header" href="#記事詳細-1">記事詳細</a></h1>
+<h2 id="-개요-7"><a class="header" href="#-개요-7">📌 개요</a></h2>
+<p>기사 제목, 본문, 작성자 정보 등을 확인할 수 있으며, 작성자 본인 또는 관리자의 경우 수정 및 삭제 버튼이 활성화됩니다.</p>
+<h2 id="-화면-항목-7"><a class="header" href="#-화면-항목-7">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E8%A8%98%E4%BA%8B%E8%A9%B3%E7%B4%B0.jpg" alt="" />
+<a href="screen/../images/%E8%A8%98%E4%BA%8B%E8%A9%B3%E7%B4%B0.jpg">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル（画面）</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「記事詳細」표시</td></tr>
+<tr><td>タイトル（記事）</td><td>title</td><td>text</td><td>-</td><td>-</td><td>수정 불가</td></tr>
+<tr><td>内容</td><td>content</td><td>text</td><td>-</td><td>-</td><td>수정 불가</td></tr>
+<tr><td>戻る</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 back() 실행</td></tr>
+<tr><td>変更</td><td>-</td><td>button</td><td>-</td><td>-</td><td>로그인 유저의 권한이 admin 이거나 작성자ID와 로그인 유저ID가 일치할 경우 버튼 표시 <br> 클릭 시 articleEdit() 실행</td></tr>
+<tr><td>削除</td><td>-</td><td>button</td><td>-</td><td>-</td><td>로그인 유저의 권한이 admin 이거나 작성자ID와 로그인 유저ID가 일치할 경우 버튼 표시 <br> 클릭 시 articleDelete() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-7"><a class="header" href="#-컴포넌트-정보-7">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>ArticleDetail</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/ArticleDetail.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-6"><a class="header" href="#-액션-정의-6">🔄 액션 정의</a></h2>
+<h2 id="-useeffect-1"><a class="header" href="#-useeffect-1">🔹 useEffect()</a></h2>
+<p>초기 렌더링 시 기사 상세 정보를 서버에서 가져옵니다.
+현재 페이지 번호도 Redux를 통해 저장합니다.</p>
+<h3 id="①-locationstate에서-가져온-articleid-값이-존재하는지-체크합니다"><a class="header" href="#①-locationstate에서-가져온-articleid-값이-존재하는지-체크합니다">① <code>location.state</code>에서 가져온 <code>articleId</code> 값이 존재하는지 체크합니다.</a></h3>
+<p>값이 존재하지 않는 경우, 에러 메세지 표시 후, 기사 일람으로 이동.</p>
+<pre><code class="language-js">alert('記事情報がありません。');
+navigate('/ArticleList');
+</code></pre>
+<h3 id="②--서버에-기사-상세-정보를-요청합니다"><a class="header" href="#②--서버에-기사-상세-정보를-요청합니다">②  서버에 기사 상세 정보를 요청합니다.</a></h3>
+<p>📄 <a href="screen/../api/articel_detail.html">記事詳細API 설계서</a></p>
+<BR>
+✅ 위의 결과에 에러가 발생하지 않은 경우
+<ol>
+<li>레스폰스로 받은 데이터를 상세 정보 state에 저장합니다.</li>
+</ol>
+<pre><code class="language-js">// 記事情報
+const [articleInfo, setArticleInfo] = useState({});
+
+↓
+
+// useEffect()
+const response = await axios.get(`/api/article_servlet/detail/${articleId}`);
+setArticleInfo(response.data);
+
+</code></pre>
+<br>
+<ol start="2">
+<li>redux에서 관리하고 있는 현재 페이지 번호를 갱신합니다.</li>
+</ol>
+<pre><code class="language-js">dispatch(setPaging({
+    currentPage: nowPage,
+}));
+</code></pre>
+<br>
+<ol start="3">
+<li>로컬의 loading state를 false로 갱신하여 화면이 리렌더링 될때 <code>Loading...</code> 문구가 표시되지 않도록합니다.</li>
+</ol>
+<pre><code class="language-js">// state 선언
+const [loading, setLoading] = useState(true)
+
+↓
+
+// useEffect()
+setLoading(false);
+
+↓
+
+// 화면 표시
+if (loading) {
+    return &lt;div&gt;Loading...&lt;/div&gt;; // 로딩 중 메시지
+}
+</code></pre>
+<br>
+❌ 위의 결과에 에러가 발생한 경우 : 에러 메세지 출력 <br>
+<br>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">코드</th><th style="text-align: left">에러 메세지</th></tr></thead><tbody>
+<tr><td style="text-align: left">400</td><td style="text-align: left">記事詳細情報を取得時に問題が発生しました。</td></tr>
+<tr><td style="text-align: left">500</td><td style="text-align: left">サーバー（DB）側でエラーが発生しました。</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-back"><a class="header" href="#-back">🔹 back()</a></h2>
+<p>기사 일람으로 이동합니다.</p>
+<pre><code class="language-js">const back = () =&gt; {
+    navigate('/ArticleList');
+};
+</code></pre>
+<hr />
+<h2 id="-articleedit"><a class="header" href="#-articleedit">🔹 articleEdit()</a></h2>
+<p>기사 편집 화면으로 이동합니다. 이때 기사 아이디를 state로 전달합니다.<br>
+※admin 권한의 유저만 가능합니다.</p>
+<pre><code class="language-js">const articleEdit = () =&gt; {
+    navigate('/articleEdit', { state: { articleId: articleInfo.articleId } });
+};
+</code></pre>
+<hr />
+<h2 id="-articledelete"><a class="header" href="#-articledelete">🔹 articleDelete()</a></h2>
+<p>기사 삭제 화면면으로 이동합니다. 이때 기사 아이디를 state로 전달합니다.<br>
+※admin 권한의 유저만 가능합니다.</p>
+<pre><code class="language-js">const articleDelete = () =&gt; {
+    navigate('/articleDelete', { state: { articleId: articleInfo.articleId } });
+};
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="記事編集-1"><a class="header" href="#記事編集-1">記事編集</a></h1>
+<h2 id="-개요-8"><a class="header" href="#-개요-8">📌 개요</a></h2>
+<p>라우팅된 state에서 <code>articleId</code>를 받아 기사 정보를 불러오고, 수정 후 저장 처리 및 화면 이동을 수행합니다. <br>
+※<code>admin</code> 권한이 있는 유저 또는 본인이 등록한 기사만 수행 가능합니다.</p>
+<h2 id="-화면-항목-8"><a class="header" href="#-화면-항목-8">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E8%A8%98%E4%BA%8B%E7%B7%A8%E9%9B%86.jpg" alt="" />
+<a href="screen/../images/%E8%A8%98%E4%BA%8B%E7%B7%A8%E9%9B%86.jpg">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル（画面）</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「記事編集」표시</td></tr>
+<tr><td>タイトル（記事）</td><td>title</td><td>text</td><td>100</td><td>-</td><td>-</td></tr>
+<tr><td>内容</td><td>content</td><td>text</td><td>1000</td><td>-</td><td>-</td></tr>
+<tr><td>編集する</td><td>-</td><td>submit</td><td>-</td><td>-</td><td>클릭 시 btnEdit() 실행</td></tr>
+<tr><td>キャンセル</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 btnCancel() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-8"><a class="header" href="#-컴포넌트-정보-8">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>ArticleEdit</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/ArticleEdit.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-7"><a class="header" href="#-액션-정의-7">🔄 액션 정의</a></h2>
+<h2 id="-displaydata"><a class="header" href="#-displaydata">🔹 displayData()</a></h2>
+<p><code>useEffect</code>에서 <code>displayData()</code> 함수를 호출하여 서버로부터 기사 상세 정보를 가져옵니다. <br>
+가져온 상세 정보는 <code>setArticleInfo()</code>를 이용하여 <code>articleInfo</code> state에 저장합니다.</p>
+<p>📄 <a href="screen/../api/articel_detail.html">記事詳細API 설계서</a></p>
+<BR>
+<pre><code class="language-jsx">const displayData = async () =&gt; {
+  try {
+    const response = await axios.get(`/api/article_servlet/detail/${location.state.articleId}`);
+    setArticleInfo(response.data);
+  } catch (error) {
+    setErrorFlag(true);
+    if (error.response &amp;&amp; error.response.status === 400) {
+      alert('記事詳細情報を取得時に問題が発生しました。');
+    } else if (error.response &amp;&amp; error.response.status === 500) {
+      alert('サーバー（DB）側でエラーが発生しました。');
+    }
+  }
+};
+
+useEffect(() =&gt; {
+  displayData();
+}, []);
+
+</code></pre>
+<hr />
+<h2 id="-btncancel-1"><a class="header" href="#-btncancel-1">🔹 btnCancel()</a></h2>
+<p>기사 상세 화면으로 이동합니다.</p>
+<pre><code class="language-js">const btnCancel = () =&gt; {
+    navigate('/articleDetail', { state: { articleId: articleInfo.articleId } });
+};
+</code></pre>
+<hr />
+<h2 id="-btnedit"><a class="header" href="#-btnedit">🔹 btnEdit()</a></h2>
+<p>편집 버튼을 클릭할 경우 실행됩니다. <br>
+수정한 기사 정보를 서버에 보내서 기사 정보를 갱신합니다.</p>
+<h3 id="①-입력값-유효성-검사-2"><a class="header" href="#①-입력값-유효성-검사-2">① 입력값 유효성 검사</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th><th>에러 메세지</th></tr></thead><tbody>
+<tr><td><strong>title</strong></td><td>미입력 확인</td><td>タイトルを入力してください。</td></tr>
+<tr><td><strong>content</strong></td><td>미입력 확인</td><td>内容を入力してください。</td></tr>
+</tbody></table>
+</div>
+<h3 id="②-서버에-편집-api-호출"><a class="header" href="#②-서버에-편집-api-호출">② 서버에 편집 API 호출</a></h3>
+<p>유효성 검사를 통과한 경우, 서버에 API를 호출합니다.</p>
+<p>📄 <a href="screen/../api/articel_edit.html">記事編集API 설계서</a></p>
+<BR>
+✅ 편집 성공 시 기사 일람 화면으로 이동
+<pre><code class="language-js">.then((response) =&gt; {
+  console.log(response.data);
+  if (response.status === 200) {
+    setErrorFlag(false);
+    navigate('/ArticleList'); // 記事一覧に遷移
+  }
+})
+</code></pre>
+<BR>
+❌ 에러가 발생한 경우 : 에러 메세지 출력<BR>
+<p><code>記事情報が他のユーザーにより削除されました。記事一覧に戻して再操作してください。</code> <BR></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="記事削除-1"><a class="header" href="#記事削除-1">記事削除</a></h1>
+<h2 id="-개요-9"><a class="header" href="#-개요-9">📌 개요</a></h2>
+<p>라우팅된 state에서 <code>articleId</code>로 선택된 기사 정보를 불러와 사용자에게 확인을 받고, 삭제 요청을 서버에 전송합니다. <br>
+※<code>admin</code> 권한이 있는 유저 또는 본인이 등록한 기사만 수행 가능합니다.</p>
+<h2 id="-화면-항목-9"><a class="header" href="#-화면-항목-9">🖥️ 화면 항목</a></h2>
+<p><img src="screen/../images/%E8%A8%98%E4%BA%8B%E5%89%8A%E9%99%A4.jpg" alt="" />
+<a href="screen/../images/%E8%A8%98%E4%BA%8B%E5%89%8A%E9%99%A4.jpg">イメージを開く</a></p>
+<div class="table-wrapper"><table><thead><tr><th>항목명(논리)</th><th>항목명(물리)</th><th>타입</th><th>글자 수 (상한)</th><th>필수 항목</th><th>설명</th></tr></thead><tbody>
+<tr><td>タイトル（画面）</td><td>-</td><td>label</td><td>-</td><td>-</td><td>「記事削除」표시</td></tr>
+<tr><td>タイトル（記事）</td><td>title</td><td>text</td><td>-</td><td>-</td><td>수정 불가</td></tr>
+<tr><td>内容</td><td>content</td><td>text</td><td>-</td><td>-</td><td>수정 불가</td></tr>
+<tr><td>削除する</td><td>-</td><td>submit</td><td>-</td><td>-</td><td>클릭 시 btnDelete() 실행</td></tr>
+<tr><td>キャンセル</td><td>-</td><td>button</td><td>-</td><td>-</td><td>클릭 시 btnCancel() 실행</td></tr>
+</tbody></table>
+</div>
+<h2 id="-컴포넌트-정보-9"><a class="header" href="#-컴포넌트-정보-9">🧩 컴포넌트 정보</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+<tr><td><strong>컴포넌트명</strong></td><td>ArticleDelete</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>src/components/ArticleDelete.jsx</td></tr>
+</tbody></table>
+</div>
+<h2 id="-액션-정의-8"><a class="header" href="#-액션-정의-8">🔄 액션 정의</a></h2>
+<h2 id="-displaydata-1"><a class="header" href="#-displaydata-1">🔹 displayData()</a></h2>
+<p><code>useEffect</code>에서 <code>displayData()</code> 함수를 호출하여 서버로부터 기사 상세 정보를 가져옵니다. <br>
+가져온 상세 정보는 <code>setArticleInfo()</code>를 이용하여 <code>articleInfo</code> state에 저장합니다.</p>
+<p>📄 <a href="screen/../api/articel_detail.html">記事詳細API 설계서</a></p>
+<pre><code class="language-jsx">const displayData = async () =&gt; {
+  try {
+    const response = await axios.get(`/api/article_servlet/detail/${location.state.articleId}`);
+    setArticleInfo(response.data);
+  } catch (error) {
+    setErrorFlag(true);
+    if (error.response &amp;&amp; error.response.status === 400) {
+      alert('記事詳細情報を取得時に問題が発生しました。');
+    } else if (error.response &amp;&amp; error.response.status === 500) {
+      alert('サーバー（DB）側でエラーが発生しました。');
+    }
+  }
+};
+
+useEffect(() =&gt; {
+  displayData();
+}, []);
+
+</code></pre>
+<hr />
+<h2 id="-btncancel-2"><a class="header" href="#-btncancel-2">🔹 btnCancel()</a></h2>
+<p>기사 상세 화면으로 이동합니다.</p>
+<pre><code class="language-js">const btnCancel = () =&gt; {
+    navigate('/articleDetail', { state: { articleId: articleInfo.articleId } });
+};
+</code></pre>
+<hr />
+<h2 id="-btndelete"><a class="header" href="#-btndelete">🔹 btnDelete()</a></h2>
+<p>삭제 버튼을 클릭할 경우 실행됩니다. <br>
+기사 정보와 로그인 유저 정보를 서버에 전송하여 기사를 삭제합니다.</p>
+<h3 id="①-서버에-삭제-api-호출"><a class="header" href="#①-서버에-삭제-api-호출">① 서버에 삭제 API 호출</a></h3>
+<p>📄 <a href="screen/../api/articel_delete.html">記事削除API 설계서</a></p>
+<BR>
+✅ 성공 시 기사 일람 화면으로 이동
+<pre><code class="language-js">.then((response) =&gt; {
+  console.log(response.data);
+  if (response.status === 200) {
+    setErrorFlag(false);
+    navigate('/ArticleList'); // 記事一覧に遷移
+  }
+})
+</code></pre>
+<BR>
+❌ 에러가 발생한 경우 : 에러 메세지 출력<BR>
+<p><code>記事情報が他のユーザーにより削除されました。記事一覧に戻して再操作してください。</code> <BR></p>
+<BR>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

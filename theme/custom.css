@@ -1,0 +1,15 @@
+:root {
+    --content-max-width: 80%;
+}
+table {
+    margin-left: 0;
+    margin-right: auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
