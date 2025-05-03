@@ -6,6 +6,21 @@
 ※`admin` 권한이 있는 유저 또는 본인이 등록한 기사만 수행 가능합니다.
 
 
+## 🖥️ 화면 항목
+
+![](../images/記事削除.jpg)
+[イメージを開く](../images/記事削除.jpg)
+
+| 항목명(논리)    | 항목명(물리) | 타입   | 글자 수 (상한) | 필수 항목   | 설명                      |
+|---------------|-------------|-------|--------------|------------|---------------------------|
+| タイトル（画面）| -          | label  | -            | -          | 「記事削除」표시           |
+| タイトル（記事）| title      | text   | -            | -          | 수정 불가                  |
+| 内容           | content    | text   | -            | -          | 수정 불가                 |
+| 削除する        | -         | submit | -            | -          | 클릭 시 btnDelete() 실행 |
+| キャンセル      | -         | button | -            | -          | 클릭 시 btnCancel() 실행   |
+
+
+
 ## 🧩 컴포넌트 정보
 
 | 항목              | 내용                                      |
@@ -17,14 +32,12 @@
 ## 🔄 액션 정의
 
 
----
-
-### 🔹 displayData()
+## 🔹 displayData()
 
 `useEffect`에서 `displayData()` 함수를 호출하여 서버로부터 기사 상세 정보를 가져옵니다. <br>
 가져온 상세 정보는 `setArticleInfo()`를 이용하여 `articleInfo` state에 저장합니다.
 
-📄 [記事詳細API 설계서](../api/articel_detail_api.md)
+📄 [記事詳細API 설계서](../api/articel_detail.md)
 
 ```jsx
 const displayData = async () => {
@@ -47,11 +60,9 @@ useEffect(() => {
 
 ```
 
-<br>
-
 ---
 
-### 🔹 btnCancel()
+## 🔹 btnCancel()
 
 기사 상세 화면으로 이동합니다.
 
@@ -61,19 +72,17 @@ const btnCancel = () => {
 };
 ```
 
-<br>
-
 ---
 
-### 🔹 btnCancel()
+## 🔹 btnDelete()
 
 삭제 버튼을 클릭할 경우 실행됩니다. <br>
 기사 정보와 로그인 유저 정보를 서버에 전송하여 기사를 삭제합니다.
 
 
-###  ① 서버에 삭제제 API 호출
+###  ① 서버에 삭제 API 호출
 
-📄 [記事削除API 설계서](../api/articel_delete_api.md)
+📄 [記事削除API 설계서](../api/articel_delete.md)
 
 <BR>
 ✅ 성공 시 기사 일람 화면으로 이동
@@ -94,5 +103,3 @@ const btnCancel = () => {
 `記事情報が他のユーザーにより削除されました。記事一覧に戻して再操作してください。` <BR>
 
 <BR>
-
----

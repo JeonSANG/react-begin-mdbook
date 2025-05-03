@@ -5,6 +5,21 @@
 로그인 입력을 받고, 입력값의 유효성을 검증하며,서버와 통신 후 인증 결과에 따라 리다이렉션을 수행합니다<br>
 Redux를 통해 로그인 정보를 저장하고 React Router를 사용하여 페이지 전환을 처리합니다.
 
+## 🖥️ 화면 항목
+
+![](../images/ログイン.jpg)
+[イメージを開く](../images/ログイン.jpg)
+
+
+| 항목명(논리)          | 항목명(물리) | 타입     | 글자 수 (상한) | 필수 항목 | 설명   |
+|---------------------|--------------|--------|----------|-----------|--------|
+| タイトル             | -            | label  | -        | -         | 「ログイン」표시      |
+| メールアドレス       | email        | text   | 30        | 〇       | -       |
+| パスワード           | password     | text   | 50       | 〇        | -       |
+| ログイン             | -            | submit | -        | -         | 클릭 시 handleSubmit() 실행|
+| アカウントを作成する  | -            | link   | -        | -         | 클릭 시 moveRegist() 실행|
+
+
 
 ## 🧩 컴포넌트 정보
 
@@ -16,9 +31,7 @@ Redux를 통해 로그인 정보를 저장하고 React Router를 사용하여 �
 
 ## 🔄 액션 정의
 
----
-
-### 🔹 `handleSubmit()`
+## 🔹 `handleSubmit()`
 
 로그인 버튼 클릭 시 호출되는 함수입니다.
 
@@ -34,7 +47,7 @@ Redux를 통해 로그인 정보를 저장하고 React Router를 사용하여 �
 
 유효성 검사를 통과한 경우, 서버에 로그인 요청을 보냅니다.
 
-📄 [Login API 설계서](../api/login_api.md)
+📄 [Login API 설계서](../api/login.md)
 
 <BR>
 ✅ 위의 결과에 에러가 발생하지 않은 경우
@@ -46,6 +59,7 @@ Redux를 통해 로그인 정보를 저장하고 React Router를 사용하여 �
 | **・authority** | response.data.authority  |
 | **・userId** | response.data.userId |
 
+<BR>
 
 2) 情報一覧メニュー 페이지로 리다이렉션<br>
 
@@ -54,15 +68,18 @@ alert(`login : ${setLoginInfo.authority}`);
 navigate('/Menu');
 ```
 
+<BR>
+
 ❌ 위의 결과에 에러가 발생한 경우<BR>
 1) 「ログイン情報を確認してください。」에러 메세지 출력.<BR>
 
+<BR>
+
 ---
 
-### 🔹 `moveRegist()`
+## 🔹 `moveRegist()`
 
 「アカウントを作成する」링크 클릭 시 호출되는 함수입니다.
-
 
 ###  ① 新規ユーザー作成 페이지로 리다이렉션<br>
 
@@ -70,4 +87,3 @@ navigate('/Menu');
     navigate('/UserRegist')
     console.log("회원 가입 페이지로 이동");
 ```
----
