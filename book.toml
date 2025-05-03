@@ -3,4 +3,6 @@ authors = ["JEON SANGWON"]
 language = "en"
 multilingual = false
 src = "src"
-title = "begin-react"
+title = ""
+[output.html]
+additional-css = ["theme/custom.css"]
